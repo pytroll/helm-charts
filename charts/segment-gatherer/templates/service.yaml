@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "segment-gatherer.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "segment-gatherer.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: {{ .Values.service.portName }}
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: {{ .Values.service.protocol }}
+  selector:
+    app: {{ include "segment-gatherer.fullname" . }}
