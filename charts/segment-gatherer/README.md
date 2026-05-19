@@ -8,16 +8,19 @@ The segment-gatherer chart deploys the Pytroll Segment Gatherer service, which:
 
 # Deployment
 
+1. Clone the repository
 ```bash
 git clone https://github.com/pytroll/helm-charts.git
 ```
 
+2. Move to the helm-charts folder
 ```bash
 cd helm-charts
 ```
 
+3. Deploy segment-gatherer with specific configuration
 ```bash
-helm --kubeconfig  <PATH-TO-KUBECONFIG> install fci \
+helm --kubeconfig  <PATH-TO-KUBECONFIG> install <PREFIX-NAME> \
   ./charts/segment-gatherer/ \
   --namespace <NAMESPACE> \
   --set-file configMap.data.sg=<PATH-TO-SEGMENT-GATHERER-CONFIG>
@@ -48,14 +51,9 @@ helm --kubeconfig  ~/.kube/kkp-ope-testdns-francesco-murdaca.kubeconfig delete f
   --namespace pytrollweek
 ```
 
-## MSG 0deg SEVIRI together with NWC SAF GEO cloud type data
+##
 
-```bash
-helm --kubeconfig  ~/.kube/kkp-ope-testdns-francesco-murdaca.kubeconfig install msg \
-  ./charts/segment-gatherer/ \
-  --namespace pytrollweek \
-  --set-file configMap.data.sg=./charts/segment-gatherer/examples/MSG-0deg-SEVIRI-with-NWCSAF-GEO-cloud-type-data.yaml
-```
+Other examples are available under `examples/` folder.
 
 # Development
 
