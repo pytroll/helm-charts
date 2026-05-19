@@ -6,17 +6,16 @@
 Helm's [documentation](https://helm.sh/docs) to get started.
 
 Once Helm has been set up correctly, add the repo as follows:
-
-    helm repo add pytroll https://pytroll.github.io/helm-charts
+```bash
+helm repo add pytroll https://pytroll.github.io/helm-charts
+```
 
 If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages.  You can then run `helm search repo
-fmi` to see the charts.
+pytroll` to see the charts.
 
-To install the <chart-name> chart:
+## 🗂️ Available Charts
 
-    helm install my-<chart-name> <alias>/<chart-name>
-
-To uninstall the chart:
-
-    helm delete my-<chart-name>
+| **Chart** | **Description** | **Location** |
+| --- | --- | --- |
+| **segment-gatherer** | Collects, groups, and publishes satellite data segments using Pytroll’s ``pytroll-collectors`` framework. Supports pattern‑based file grouping, timeliness rules, and Posttroll publishing. | ``charts/segment-gatherer`` |

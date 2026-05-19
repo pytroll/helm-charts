@@ -1,0 +1,42 @@
+patterns:
+  msg:
+    pattern:
+      "H-000-{orig_platform_name:4s}__-{orig_platform_name:4s}________-{channel_name:_<9s}-{segment:_<9s}-{start_time:%Y%m%d%H%M}-__"
+    critical_files: :EPI,:PRO
+    wanted_files: VIS006:000001-000008,HRV:000001-000024,IR_108:000001-000008,:PRO,:EPI
+    all_files: VIS006:000001-000008,HRV:000001-000024,IR_108:000001-000008,:PRO,:EPI
+    is_critical_set: true
+    variable_tags: ['orig_platform_name', ]
+  nwc_saf_geo:
+    pattern:
+      "S_NWC_{segment:2s}_{orig_platform_name:4s}_MSG-N-VISIR_{start_time:%Y%m%dT%H%M%S}Z.nc"
+    critical_files: :CT
+    wanted_files: :CT
+    all_files: :CT
+    is_critical_set: true
+    variable_tags: ['orig_platform_name', ]
+# Time in seconds from the first arrived file until timeout
+timeliness:
+  1800
+# Time tag used in ALL of the patterns
+time_name:
+  start_time
+# The time, shown by "time_name", can differ by time_tolerance seconds
+time_tolerance:
+  30
+check_existing_files_after_start: true
+all_files_are_local: true
+posttroll:
+  topics:
+    - /nwc_geo/0deg/ct
+    - /msg/0deg/L1.5
+  publish_topic:
+    /nwc_geo_msg/0deg/segment
+  publish_port:
+    40000
+  nameservers:
+    - false
+  addresses:
+    - tcp://eumetcast-a.fmi.fi:40101
+    - tcp://eumetcast-b.fmi.fi:40101
+    - tcp://geo-nwc-msg.fmi.fi:40210
