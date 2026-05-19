@@ -51,7 +51,7 @@ helm --kubeconfig  ~/.kube/kkp-ope-testdns-francesco-murdaca.kubeconfig delete f
   --namespace pytrollweek
 ```
 
-##
+## More configuration examples
 
 Other examples are available under `examples/` folder.
 
