@@ -88,6 +88,13 @@ jobs:
             --url https://pytroll.github.io/pytroll-charts \
             --merge existing/index.yaml
 
+      - name: Generate landing page from README.md
+        run: |
+          HTML=$(curl -s \
+            -H "Accept: application/vnd.github.v3.html" \
+            https://api.github.com/repos/${{ github.repository }}/readme)
+          echo "$HTML" > public/index.html
+
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
