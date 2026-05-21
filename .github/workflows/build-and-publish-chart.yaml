@@ -1,0 +1,55 @@
+name: Build & Publish Single Helm Chart
+
+on:
+  push:
+    tags:
+      - "*-*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract chart name and version from tag
+        id: tag
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          CHART_NAME="${TAG%-*}"
+          VERSION="${TAG##*-}"
+          echo "chart=$CHART_NAME" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Package only the released chart
+        run: |
+          mkdir -p public
+          helm package "charts/${{ steps.tag.outputs.chart }}" --destination public
+
+      - name: Download existing Helm repo from GitHub Pages
+        run: |
+          mkdir -p existing
+          curl -sfL "https://pytroll.github.io/helm-charts/index.yaml" -o existing/index.yaml || true
+          cp -r existing/* public/ || true
+
+      - name: Regenerate index.yaml including all versions
+        run: |
+          helm repo index public \
+            --url https://pytroll.github.io/helm-charts \
+            --merge public/index.yaml
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

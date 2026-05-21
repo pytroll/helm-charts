@@ -1,0 +1,31 @@
+name: Create Chart Release Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      chart:
+        description: "Chart to release (folder name under charts/)"
+        required: true
+        type: string
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read chart version
+        id: version
+        run: |
+          VERSION=$(yq '.version' charts/${{ github.event.inputs.chart }}/Chart.yaml)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create tag
+        run: |
+          TAG="${{ github.event.inputs.chart }}-${{ steps.version.outputs.version }}"
+          git tag "$TAG"
+          git push origin "$TAG"
