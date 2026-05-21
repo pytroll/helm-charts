@@ -86,7 +86,7 @@ jobs:
         run: |
           helm repo index public \
             --url https://pytroll.github.io/pytroll-charts \
-            --merge public/index.yaml
+            --merge existing/index.yaml
 
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
