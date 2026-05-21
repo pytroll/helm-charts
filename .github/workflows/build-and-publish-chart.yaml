@@ -72,7 +72,7 @@ jobs:
         run: |
           mkdir -p existing
           curl -sfL "https://pytroll.github.io/pytroll-charts/index.yaml" -o existing/index.yaml || true
-          cp -r existing/* public/ || true
+          cp existing/index.yaml public/index.yaml || true
 
       - name: Regenerate index.yaml including all versions
         run: |
