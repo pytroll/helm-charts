@@ -6,6 +6,13 @@ on:
     types:
       - completed
 
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to publish (e.g. segment-gatherer-0.3.1)"
+        required: false
+        type: string
+
 jobs:
   publish:
     runs-on: ubuntu-latest
