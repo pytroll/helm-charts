@@ -1,9 +1,10 @@
 name: Build & Publish Single Helm Chart
 
 on:
-  push:
-    tags:
-      - "*-*"
+  workflow_run:
+    workflows: ["Create Chart Release Tag"]
+    types:
+      - completed
 
 jobs:
   publish:
