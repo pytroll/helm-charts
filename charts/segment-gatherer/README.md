@@ -10,7 +10,7 @@ The segment-gatherer chart deploys the Pytroll Segment Gatherer service, which:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/pytroll/helm-charts.git
+git clone https://github.com/pytroll/pytroll-charts.git
 ```
 
 2. Move to the helm-charts folder
@@ -64,4 +64,4 @@ helm template ./segment-gatherer/ --debug --set-file configMap.data.sg=./segment
 
 # Release
 
-TBD
+See main README of the repository.
