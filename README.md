@@ -19,3 +19,4 @@ pytroll` to see the charts.
 | **Chart** | **Description** | **Location** |
 | --- | --- | --- |
 | **segment-gatherer** | Collects, groups, and publishes satellite data segments using Pytroll’s ``pytroll-collectors`` framework. Supports pattern‑based file grouping, timeliness rules, and Posttroll publishing. | ``charts/segment-gatherer`` |
+| **trollflow2** | Orchestrates end‑to‑end satellite data processing workflows using Pytroll’s `trollflow2` engine. Listens for Posttroll messages, triggers Satpy‑based product generation, and publishes processed outputs. | `charts/trollflow2` |

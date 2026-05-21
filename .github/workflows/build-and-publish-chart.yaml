@@ -79,13 +79,13 @@ jobs:
       - name: Download existing Helm repo from GitHub Pages
         run: |
           mkdir -p existing
-          curl -sfL "https://pytroll.github.io/helm-charts/index.yaml" -o existing/index.yaml || true
+          curl -sfL "https://pytroll.github.io/pytroll-charts/index.yaml" -o existing/index.yaml || true
           cp -r existing/* public/ || true
 
       - name: Regenerate index.yaml including all versions
         run: |
           helm repo index public \
-            --url https://pytroll.github.io/helm-charts \
+            --url https://pytroll.github.io/pytroll-charts \
             --merge public/index.yaml
 
       - name: Upload to GitHub Pages
