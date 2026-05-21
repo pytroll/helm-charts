@@ -3,8 +3,7 @@ name: Build & Publish Single Helm Chart
 on:
   workflow_run:
     workflows: ["Create Chart Release Tag"]
-    types:
-      - completed
+    types: [completed]
 
   workflow_dispatch:
     inputs:
@@ -12,6 +11,10 @@ on:
         description: "Tag to publish (e.g. segment-gatherer-0.3.1)"
         required: false
         type: string
+
+  push:
+    tags:
+      - "*-*"
 
 jobs:
   publish:
@@ -25,10 +28,37 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Extract chart name and version from tag
+      - name: Determine tag
+        id: determine_tag
+        run: |
+          # 1. Manual trigger
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            TAG="${{ github.event.inputs.tag }}"
+            echo "Using manual tag: $TAG"
+            echo "tag=$TAG" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # 2. Tag push trigger
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+            echo "Using pushed tag: $TAG"
+            echo "tag=$TAG" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # 3. workflow_run trigger → extract tag from the release
+          TAG=$(gh release list --limit 1 --json tagName -q '.[0].tagName')
+          echo "Using tag from release: $TAG"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract chart name and version
         id: tag
         run: |
-          TAG="${GITHUB_REF#refs/tags/}"
+          TAG="${{ steps.determine_tag.outputs.tag }}"
           CHART_NAME="${TAG%-*}"
           VERSION="${TAG##*-}"
           echo "chart=$CHART_NAME" >> $GITHUB_OUTPUT
